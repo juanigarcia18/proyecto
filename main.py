@@ -6,6 +6,8 @@ from envios import GestionEnvios
 from estadisticas import Estadisticas
 import os
 
+#leo messi campeon
+
 def main():
     ruta_archivo = r'c:\Users\USUARIO\Desktop\UNIMET\ALGORITMOS Y PROGRAMACION\proyecto\productos.txt'
     gestion_productos = GestionProductos()
