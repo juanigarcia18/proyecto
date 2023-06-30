@@ -6,20 +6,18 @@ from envios import GestionEnvios
 from estadisticas import Estadisticas
 import os
 
-#leo messi campeon
-
 def main():
-    ruta_archivo = r'c:\Users\USUARIO\Desktop\UNIMET\ALGORITMOS Y PROGRAMACION\proyecto\productos.txt'
+
     gestion_productos = GestionProductos()
-    if os.path.isfile(ruta_archivo):
-        print("chiguire") # hacer funcion que lea el txt que se creo y hablar con yon
-    
-    else :
+
+    if os.path.isfile('productos.txt'):
+        print("El archivo productos.txt ya existe\n")
+        
+    else:
         gestion_productos.obtener_productos_api()
         gestion_productos.guardar_productos_txt()
     
     gestion_productos = GestionProductos()
-    gestion_productos.obtener_productos_api()
     gestion_ventas = GestionVentas()
     gestion_clientes = GestionClientes()
     gestion_pagos = GestionPagos()
@@ -27,111 +25,389 @@ def main():
     estadisticas = Estadisticas(gestion_ventas.ventas, gestion_pagos.pagos, gestion_envios.envios)
 
     while True:
-        print("1-Registrar Producto")
-        print("2-Registrar ventas")
-        print("3-Registrar clientes")
-        print("4-Registrar pago")
-        print("5-Registrar envio")
-        print("6-Generar informe ventas")
-        print("7-Generar informe pagos")
-        print("8-Generar informe envios")
-        print("9-Salir")
-        
-        accion = input("¿Que desea hacer? Escriba su seleccion:\n")
-        
-        if accion == "1":
-            name = input("Introduce el nombre del producto: ")
-            description = input("Introduce la descripcion del producto: ")
-            price = input("Introduce el precio del producto: ")
-            while not price.replace(".", "").isdigit() or not price.replace(",", "").isdigit() :
-                price = input("Error de sintaxis\nIntroduce el precio del producto: ")
-            price = float(price)
-            category = input("Introduce la categoria del producto: ")
-            quantity = input("Introduce la cantidad del producto: ")
-            while not quantity.isnumeric():
-                quantity = input("Error de sintaxis\nIntroduce la cantidad del producto: ")
-            quantity = int(quantity)
-            gestion_productos.agregar_producto(name, description, price, category, quantity)
-        
-        elif accion == "2":
-            
-            cliente = input("Introduzca su nombre ")
-            productos = input("Introduce los productos (separados por comas): ").split(",")
-            cantidad = [int(x) for x in input("Introduce la cantidad de cada producto (separados por comas): ").split(",")]
-            metodo_pago = input("=========Metodo de pago=========\nIntroduzca el numero de su seleccion:\n1-Zelle \n2-Pago Movil \n3-Cash \n4-Transferencia\n")
-            while metodo_pago not in ["1", "2", "3", "4"]:
-                print("\nError, intente nuevamente\n")
-                metodo_pago = input("=========Metodo de pago=========\nIntroduzca el numero de su seleccion:\n1-Zelle \n2-Pago Movil \n3-Cash \n4-Transferencia\n")
-            if metodo_pago == "1" :
-                metodo_pago = "Zelle"
-            if metodo_pago == "2" :
-                metodo_pago = "Pago Movil"
-            if metodo_pago == "3" :
-                metodo_pago = "Cash"
-            if metodo_pago == "4" :
-                metodo_pago = "Transferencia"
-            
-            metodo_envio = input("=========Metodo de Envio=========\nIntroduzca el numero de su seleccion:\n1-Delivery \n2-MRW \n3-Zoom \n")
-            while metodo_pago not in ["1", "2", "3"]:
-                print("\nError, intente nuevamente\n")
-                metodo_envio = input("=========Metodo de Envio=========\nIntroduzca el numero de su seleccion:\n1-Delivery \n2-MRW \n3-Zoom \n")
-            if metodo_envio == "1" :
-                metodo_envio = "Delivery"
-            if metodo_envio == "2" :
-                metodo_envio = "MRW"
-            if metodo_envio == "3" :
-                metodo_envio = "Zoom"
+        print("\n=====Bienvenido=====\n")
+        print("1. Gestion de clientes")
+        print("2. Gestion de productos")
+        print("3. Gestion de ventas")
+        print("4. Gestion de pagos")
+        print("5. Gestion de envios")
+        print("6. Estadisticas")
+        print("7. Salir")
+        opcion = input("\nSeleccione una opcion: ")
 
-            subtotal = float(input("Introduce el subtotal: "))
-            descuentos = 0.05
-            iva = 0.16
-            igtf = 0.03
-            total = float(input("Introduce el total: "))
-            gestion_ventas.registrar_venta(cliente, productos, cantidad, metodo_pago, metodo_envio, subtotal, descuentos, iva, igtf, total)
+        # ESTO VA CHEVERE 
+
+        if opcion == "1":
+
+            while True:
+                print("\n=====Gestion de clientes=====\n")
+                print("1.1 Registrar cliente")
+                print("1.2 Buscar cliente")
+                print("1.3 Imprimir lista de clientes")
+                print("1.4 Volver")
+                opcion_cliente = input("\nSeleccione una opcion: ")
+
+                # Validacion
+                while opcion_cliente not in ["1.1", "1.2", "1.3", "1.4"]:
+                    print("\nOpcion no valida\n\n=====Gestion de clientes=====\n\n1.1 Registrar cliente")
+                    print("1.2 Buscar cliente")
+                    print("1.3 Imprimir lista de clientes")
+                    print("1.4 Volver")
+                    opcion_cliente = input("\nSeleccione una opcion: ")   
+
+                # Registrar un cliente
+                if opcion_cliente == "1.1":
+                    nombre = input("Ingrese el nombre del cliente: ")
+                    tipo_cliente = input("Ingrese el tipo de cliente (natural/juridico): ")
+                    
+                    # Validacion
+                    while tipo_cliente.lower() not in ["natural", "juridico"] :
+                        print("Error, debe ser natural o juridico")
+                        tipo_cliente = input("Ingrese el tipo de cliente (natural/juridico): ")
+                                             
+                    documento = input("Ingrese su documento (cedula/rif): ")
+                    correo = input("Ingrese su correo: ")
+                    direccion = input("Ingrese su direccion de envio:")
+                    telefono = input("Ingrese su numero de telefono: ")
+
+                    gestion_clientes.agregar_cliente(nombre, tipo_cliente, documento, correo, direccion, telefono)
+
+                
+                # Buscar cliente por documento o correo
+                elif opcion_cliente == "1.2":
+
+                    opcion2 = input("1.2.1 Buscar por documento (cedula/rif)\n1.2.2 Buscar por correo\nOpcion: ")
+
+                    if opcion2 == "1.2.1":
+                        documento = input("Ingrese el documento del cliente a buscar: ")
+                        clientes_encontrados = gestion_clientes.buscar_cliente(documento=documento)
+                        if clientes_encontrados:
+                            for cliente in clientes_encontrados:
+                                print(cliente)  
+                        else:
+                            print("No se encontro ningun cliente con el documento proporcionado")
+
+                    elif opcion2 == "1.2.2":
+                        correo = input("Ingrese el correo del cliente a buscar: ")
+                        clientes_encontrados = gestion_clientes.buscar_cliente(correo=correo)
+                        if clientes_encontrados:
+                            for cliente in clientes_encontrados:
+                                print(cliente)  
+                        else:
+                            print("No se encontró ningun cliente con el correo proporcionado")
+                
+                # Imprimir lista de clientes en un txt
+                elif opcion_cliente == "1.3":
+                    
+                    gestion_clientes.guardar_clientes_txt()
+
+
+                # volver al menu anterior
+                elif opcion_cliente == "1.4":
+                    break
+
+       
+
+        # REVISAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+
+        elif opcion == "2":
+
+            while True :
+                print("\n=====Gestion de Productos=====\n")
+                print("2.1 Registrar producto")
+                print("2.2 Buscar producto")
+                print("2.3 Modificar producto")
+                print("2.4 Eliminar producto")
+                print("2.5 Volver")
+                opcion_producto = input("\nSeleccione una opción: ")
+
+                
+                # Validacion
+                while opcion_producto not in ["2.1", "2.2", "2.3", "2.4", "2.5"]:
+                    print("\nOpcion no valida\n\n=====Gestion de Productos=====\n\n2.1 Registrar producto")
+                    print("2.2 Buscar producto")
+                    print("2.3 Modificar producto")
+                    print("2.4 Eliminar producto")
+                    print("2.5 Volver")
+                    opcion_producto = input("\nSeleccione una opción: ")
+
+                if opcion_producto == "2.1":
+                    
+                    name = input("Ingrese el nombre del producto: ")
+                    description = input("Ingrese la descripción del producto: ")
+                    price = float(input("Ingrese el precio del producto: "))
+                    category = input("Ingrese la categoría del producto: ")
+                    quantity = int(input("Ingrese la cantidad del producto: "))
+                    gestion_productos.agregar_producto(name, description, price, category, quantity)
+                    gestion_productos.guardar_productos2_txt()
+                    print("Producto registrado correctamente")
+
+                    
+                elif opcion_producto == "2.2":
+                    nombre = input("Ingrese el nombre del producto a buscar: ")
+                    productos_encontrados = gestion_productos.buscar_producto(name=nombre)
+                    if productos_encontrados:
+                        for producto in productos_encontrados:
+                            print(producto)
+                    else:
+                        print("No se encontro ningun producto con el nombre proporcionado.")
+                        
+                elif opcion_producto == "2.3":
+                    nombre = input("Ingrese el nombre del producto a modificar: ")
+                    productos_encontrados = gestion_productos.buscar_producto(name=nombre)
+                    
+                    if productos_encontrados:
+                        new_name = input("Ingrese el nuevo nombre del producto: ")
+                        new_description = input("Ingrese la nueva descripción del producto: ")
+                        
+                        while True:
+                            new_price = input("Ingrese el nuevo precio del producto: ")
+                            try:
+                                new_price = float(new_price)
+                                break  # Salir del bucle si se ingresa un numero valido
+                            except ValueError:
+                                print("Ingrese un numero valido para el precio")
+                        
+                        new_category = input("Ingrese la nueva categoría del producto: ")
+                        
+                        while True:
+                            new_quantity = input("Ingrese la nueva cantidad del producto: ")
+                            try:
+                                new_quantity = int(new_quantity)
+                                break  # Salir del bucle si se ingresa un numero valido
+                            except ValueError:
+                                print("Ingrese un numero valido para la cantidad")
+                        
+                        for producto in productos_encontrados:
+                            if gestion_productos.modificar_producto(producto.name, new_name, new_description, new_price, new_category, new_quantity):
+                                print("Producto modificado correctamente")
+                            else:
+                                print("No se pudo modificar el producto")
+                    else:
+                        print("No se encontro ningun producto con el nombre proporcionado")
+
+                        
+                elif opcion_producto == "2.4":
+                    nombre = input("Ingrese el nombre del producto a eliminar: ")
+                    productos_encontrados = gestion_productos.buscar_producto(name=nombre)
+                    if productos_encontrados:
+                        for producto in productos_encontrados:
+                            if gestion_productos.eliminar_producto(producto.name):
+                                print("Producto eliminado correctamente")
+                            else:
+                                print("No se pudo eliminar el producto")
+                    else:
+                        print("No se encontro ningun producto con el nombre proporcionado")
+                
+                # volver al menu anterior
+                elif opcion_producto == "2.5":
+                    break
+                
+
         
-        elif accion == "3":
+      # REVISAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR  
+        
+        elif opcion == "3":
+
+            while True :
+                print("\n=====Gestion de Ventas=====\n")
+                print("3.1 Registrar venta")
+                print("3.2 Buscar venta")
+                print("3.3 Volver")
+                opcion_venta = input("\nSeleccione una opción: ")
+
+                # Validacion
+                while opcion_venta not in ["3.1", "3.2", "3.3"]:
+                    print("\nOpcion no valida\n\n=====Gestion de Ventas=====\n\n3.1 Registrar venta")
+                    print("3.2 Buscar venta")
+                    print("3.3 Volver")
+                    opcion_venta = input("\nSeleccione una opcion: ")
+
+                if opcion_venta == "3.1":
+                    # Registrar venta
+                    cliente = input("Ingrese el nombre del cliente: ")
+                    productos = []  # Lista de productos de la venta
+                    cantidad = []  # Lista de cantidades de los productos
+                    print("metodos de pago disponibles: Zelle, Cash, PM, PdV")
+                    pago = input("Ingrese su metodo de pago: ") # Método de pago
+                    print("metodos de envio disponibles: MRW, Zoom, Delivery")
+                    envio = input("Ingrese su metodo de envio: ")  # Método de envío
+
+                    gestion_ventas.registrar_venta(cliente, productos, cantidad, pago, envio)
+                    print("Venta registrada con exito")
             
-            nombre = input("Introduce el nombre del cliente: ")
-            tipo_cliente =input("Introduce el tipo de cliente: ")
-            documento =input("Introduce el documento del cliente: ")
-            correo = input("Introduce el correo electronico del cliente: ")
-            direccion =input("Introduce la direccion: ")
-            telefono = input("Introduce el numero de telefono: ")
-            gestion_clientes.agregar_cliente(nombre, tipo_cliente, documento, correo, direccion, telefono)
+            
+                elif opcion_venta == "3.2":
+                    # Buscar venta
+                    cliente = input("Ingrese el nombre del cliente a buscar: ")
+                    ventas_encontradas = gestion_ventas.buscar_ventas(cliente=cliente)
+
+                    if len(ventas_encontradas) > 0:
+                        print("Ventas encontradas:")
+                        for venta in ventas_encontradas:
+                            print(f"Cliente: {venta.cliente}")
+                            print("Productos:")
+                            for producto, cantidad in zip(venta.productos, venta.cantidad):
+                                print(f"  - Nombre: {producto.name}")
+                                print(f"    Descripción: {producto.description}")
+                                print(f"    Precio: {producto.price}")
+                                print(f"    Cantidad: {cantidad}")
+                            print(f"Monto total: {venta.get_monto_total()}")
+                            print("------------------------")
+                
+                # volver al menu
+                elif opcion_venta == "3.3":
+                    break
+
+
+        # ESTO VA CHEVERE       
+
+
+        elif opcion == "4":
+
+            while True :
+                print("\n=====Gestion de Pagos=====\n")
+                print("4.1 Registrar pago")
+                print("4.2 Buscar pago")
+                print("4.3 Volver")
+                opcion_pago = input("\nSeleccione una opción: ")
+                
+                # Validacion
+                while opcion_pago not in ["4.1", "4.2", "4.3"]:
+                    print("\nOpcion no valida\n\n=====Gestion de Pagos=====\n")
+                    print("4.1 Registrar pago")
+                    print("4.2 Buscar pago")
+                    print("4.3 Volver")
+                    opcion_pago = input("\nSeleccione una opcion: ")
+                    
+                if opcion_pago == "4.1":
+                    cliente = input("Ingrese el nombre del cliente: ")
+                    monto = input("Ingrese el monto del pago: ")
+                    moneda = input("Ingrese la moneda con la que pago: ")
+                    tipo = input("Ingrese el tipo de pago (PdV, PM, Zelle, Cash): ")
+                    fecha = input("Ingrese la fecha del pago (dd/mm/aaaa): ")
+                    gestion_pagos.registrar_pago(cliente, monto, moneda, tipo, fecha)
+            
+                elif opcion_pago == "4.2":
+
+                    opcion2 = input("\n4.2.1 Buscar por cliente\n4.2.2 Buscar por fecha\n4.2.3 Buscar por tipo de pago\n4.2.4 Buscar por moneda de pago\nSeleccione una opcion: ")
+
+                    while opcion2 not in ["4.2.1", "4.2.2", "4.2.3", "4.2.4"]:
+                        opcion2 = input("\n4.2.1 Buscar por cliente\n4.2.2 Buscar por fecha\n4.2.3 Buscar por tipo de pago\n4.2.4 Buscar por moneda de pago\nSeleccione una opcion valida: ")
+
+                    if opcion2 == "4.2.1":
+                        cliente_nombre = input("Ingrese el nombre del cliente: ")
+                        pagos_encontrados = gestion_pagos.buscar_pago(cliente=cliente_nombre)
+                        if pagos_encontrados:
+                            for pago in pagos_encontrados:
+                                print(pago)
+                        else:
+                            print("No se encontraron pagos para el cliente especificado")
+
+                    elif opcion2 == "4.2.2":
+                        fecha_pago = input("Ingrese la fecha del pago (dd/mm/aaaa):  ")
+                        pagos_encontrados = gestion_pagos.buscar_pago(fecha=fecha_pago)
+                        if pagos_encontrados:
+                            for pago in pagos_encontrados:
+                                print(pago)
+                        else:
+                            print("No se encontraron pagos para la fecha especificada")
+
+                    elif opcion2 == "4.2.3":
+                        tipo_pago = input("Ingrese el tipo de pago: ")
+                        pagos_encontrados = gestion_pagos.buscar_pago(tipo=tipo_pago)
+                        if pagos_encontrados:
+                            for pago in pagos_encontrados:
+                                print(pago)
+                        else:
+                            print("No se encontraron pagos para el tipo de pago especificado")
+
+                    elif opcion2 == "4.2.4":
+                        moneda_pago = input("Ingrese la moneda del pago: ")
+                        pagos_encontrados = gestion_pagos.buscar_pago(moneda=moneda_pago)
+                        if pagos_encontrados:
+                            for pago in pagos_encontrados:
+                                print(pago)
+                        else:
+                            print("No se encontraron pagos para la moneda especificada")
+                    
+                # volver al menu
+                elif opcion_pago == "4.3":
+                    break
         
-        elif accion == "4":
-            id = input("Introduce el ID del pago: ")
-            cliente = input("Introduce el cliente: ")
-            monto = float(input("Introduce el monto del pago: "))
-            moneda = input("Introduce la moneda del pago: ")
-            tipo = input("Introduce el tipo de pago: ")
-            fecha = input("Introduce la fecha del pago: ")
-            gestion_pagos.registrar_pago(id, cliente, monto, moneda, tipo, fecha)
+        # REVISAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+        elif opcion == "5":
+
+            while True :
+
+                print("\n=====Gestion de Envios=====\n")
+                print("5.1 Registrar envio")
+                print("5.2 Buscar envio")
+                print("5.3 Volver")
+                opcion_envio = input("\nSeleccione una opcion: ")
+
+                # Validacion
+                while opcion_envio not in ["5.1", "5.2", "5.3"]:
+
+                    print("\nOpcion no valida\n\n=====Gestion de Envios=====\n")
+                    print("5.1 Registrar envio")
+                    print("5.2 Buscar envio")
+                    print("5.3 Volver")
+                    opcion_envio = input("\nSeleccione una opcion: ")
+
+                if opcion_envio == "5.1":
+                    cliente = input("Ingrese el nombre del cliente: ")
+                    # Aquí puedes agregar más campos para registrar un envío
+                    gestion_envios.registrar_envio(cliente)
+                elif opcion_envio == "5.2":
+                    cliente = input("Ingrese el nombre del cliente a buscar: ")
+                    envio = gestion_envios.buscar_envio(cliente)
+                    print(envio)
+
+                # volver al menu
+                elif opcion_envio == "5.3":
+                    break
         
-        elif accion == "5":
-            order_compra = input("Introduce el numero de orden de compra: ")
-            servicio = input("Introduce el servicio de envio: ")
-            direccion = input("Introduce la direccion de envio: ")
-            estado = input("Introduce el estado del envio: ")
-            gestion_envios.registrar_envio(order_compra, servicio, direccion, estado)
+
         
-        elif accion == "6":
-            periodo = input("Introduce el periodo para el informe de ventas: ")
-            estadisticas.generar_informe_ventas(periodo)
+        # REVISAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+        elif opcion == "6":
+
+            while True :
+                print("\n=====Estadisticas=====\n")
+                print("6.1 Generar informe de ventas")
+                print("6.2 Generar informe de pagos")
+                print("6.3 Generar informe de envios")
+                print("6.4 Volver")
+                opcion_informe = input("\nSeleccione una opcion: ")
+
+                # Validacion
+                while opcion_informe not in ["6.1", "6.2", "6.3", "6.4"]:
+                    print("Opcion no valida\n\n=====Estadisticas=====\n")
+                    print("6.1 Generar informe de ventas")
+                    print("6.2 Generar informe de pagos")
+                    print("6.3 Generar informe de envios")
+                    print("6.4 Volver")
+                    opcion_informe = input("\nSeleccione una opcion: ")
+
+
+                if opcion_informe == "6.1":
+                    estadisticas.generar_informe_ventas()
+                elif opcion_informe == "6.2":
+                    estadisticas.generar_informe_pagos()
+                elif opcion_informe == "6.3":
+                    estadisticas.generar_informe_envios()
+                
+                # volver al menu
+                elif opcion_informe == "6.4":
+                    break
+                
+            
         
-        elif accion == "7":
-            periodo = input("Introduce el periodo para el informe de pagos: ")
-            estadisticas.generar_informe_pagos(periodo)
-        
-        elif accion == "8":
-            periodo = input("Introduce el periodo para el informe de envíos: ")
-            estadisticas.generar_informe_envios(periodo)
-        
-        elif accion == "9":
-            break
-        
+        elif opcion == "7":
+                break
         else:
-            print("Accion no valida. Por favor, intenta nuevamente.")
+            print("\nOpcion no valida. Por favor, intente de nuevo.")
 
 if __name__ == "__main__":
     main()
